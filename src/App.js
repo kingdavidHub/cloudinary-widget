@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+    checkUploadResult = (resultEvent) => {
+    if(resultEvent.event === 'success'){
+      console.log(this.props.currentUser.id);
+      this.props.postPhoto({
+        user_id: this.props.currentUser.id,
+        caption: '',
+        url: resultEvent.info.secure_url
+      })
+      .then(this.props.history.push(`/profile`))
+    }
+  }
+
+  uploadWidget = () => {
+    window.cloudinary.openUploadWidget({
+      cloudName: "",
+      uploadPreset: ""},
+      (error, result) => { console.log(result)
+    })
+  }
+   
+  render() {
+    return (
+       <div>
+        <h1>Hello World</h1>
+        <button onClick={this.uploadWidget}>Upload Photo</button>
+      </div>
+    )
+  }
 }
 
 export default App;
